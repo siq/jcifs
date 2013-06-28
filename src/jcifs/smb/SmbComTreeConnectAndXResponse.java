@@ -53,11 +53,19 @@ class SmbComTreeConnectAndXResponse extends AndXServerMessageBlock {
 
             bufferIndex += len + 1;
 
-            int filesystemTypeLength = readUnicodeLength(buffer, bufferIndex, 32);
-            filesystemType = new String(buffer, bufferIndex, filesystemTypeLength, UNI_ENCODING);
-
-            bufferIndex += filesystemTypeLength + 2;
-
+            if (service.equals("IPC"))
+            {
+                // IPC has no filesystem... per spec this should be a unicode null (0x0000).
+                // NetApp however sends nothing.
+                filesystemType = new String();
+            }
+            else
+            {
+                int filesystemTypeLength = readUnicodeLength(buffer, bufferIndex, 32);
+                filesystemType = new String(buffer, bufferIndex, filesystemTypeLength, UNI_ENCODING);
+                bufferIndex += filesystemTypeLength + 2;
+            }
+            
         } catch( UnsupportedEncodingException uee ) {
             return 0;
         }

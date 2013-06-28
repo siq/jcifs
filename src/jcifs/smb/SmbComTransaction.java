@@ -35,9 +35,7 @@ abstract class SmbComTransaction extends ServerMessageBlock implements Enumerati
     private static final int DISCONNECT_TID      = 0x01;
     private static final int ONE_WAY_TRANSACTION = 0x02;
 
-    // SMC padding should be to 4 byte boundary
-    // private static final int PADDING_SIZE = 2;
-    private static final int PADDING_SIZE = 4;
+    private static final int PADDING_SIZE = 2;
 
     private int flags = 0x00;
     private int fid;

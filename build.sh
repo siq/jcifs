@@ -2,7 +2,7 @@
 
 TPWD=`pwd`
 
-cd /deepfs/src/flxsmb
+cd /deepfs/src/jcifs
 ant clean
 if [[ $DEBUG ]]
 then
@@ -17,6 +17,6 @@ else
     ant jar
 fi
 
-cp -f /deepfs/src/flxsmb/dist/jcifs-1.3.17-flx.1.jar /deepfs/src/siqsmb/lib/jcifs-1.3.17-flx.1.jar
+cp -f /deepfs/src/jcifs/dist/jcifs-1.3.17-flx.1.jar /deepfs/src/siqsmb/lib/jcifs-1.3.17-flx.1.jar
 
 cd $TPWD
