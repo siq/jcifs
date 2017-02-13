@@ -269,6 +269,7 @@ import java.util.Date;
 
 public class SmbFile extends URLConnection implements SmbConstants {
 
+    static final String RFC_2396_DISTINGUISHING_PREFIX = "URL:";
     static final int O_RDONLY = 0x01;
     static final int O_WRONLY = 0x02;
     static final int O_RDWR   = 0x03;
@@ -468,7 +469,7 @@ public class SmbFile extends URLConnection implements SmbConstants {
                 throws MalformedURLException, UnknownHostException {
         this( context.isWorkgroup0() ?
             new URL( null, "smb://" + name, Handler.SMB_HANDLER ) :
-            new URL( context.url, name, Handler.SMB_HANDLER ), context.auth );
+            new URL( context.url, RFC_2396_DISTINGUISHING_PREFIX+name, Handler.SMB_HANDLER ), context.auth );
     }
 
 /**
@@ -486,7 +487,7 @@ public class SmbFile extends URLConnection implements SmbConstants {
 
     public SmbFile( String context, String name ) throws MalformedURLException {
         this( new URL( new URL( null, context, Handler.SMB_HANDLER ),
-                name, Handler.SMB_HANDLER ));
+                RFC_2396_DISTINGUISHING_PREFIX+name, Handler.SMB_HANDLER ));
     }
 
 /**
@@ -539,7 +540,7 @@ public class SmbFile extends URLConnection implements SmbConstants {
  */
     public SmbFile( String context, String name, NtlmPasswordAuthentication auth )
                     throws MalformedURLException {
-        this( new URL( new URL( null, context, Handler.SMB_HANDLER ), name, Handler.SMB_HANDLER ), auth );
+        this( new URL( new URL( null, context, Handler.SMB_HANDLER ), RFC_2396_DISTINGUISHING_PREFIX+name, Handler.SMB_HANDLER ), auth );
     }
 /**
  * Constructs an SmbFile representing a resource on an SMB network such
@@ -562,7 +563,7 @@ public class SmbFile extends URLConnection implements SmbConstants {
  */
     public SmbFile( String context, String name, NtlmPasswordAuthentication auth, int shareAccess )
                     throws MalformedURLException {
-        this( new URL( new URL( null, context, Handler.SMB_HANDLER ), name, Handler.SMB_HANDLER ), auth );
+        this( new URL( new URL( null, context, Handler.SMB_HANDLER ), RFC_2396_DISTINGUISHING_PREFIX+name, Handler.SMB_HANDLER ), auth );
         if ((shareAccess & ~(FILE_SHARE_READ | FILE_SHARE_WRITE | FILE_SHARE_DELETE)) != 0) {
             throw new RuntimeException( "Illegal shareAccess parameter" );
         }
@@ -590,7 +591,7 @@ public class SmbFile extends URLConnection implements SmbConstants {
                     throws MalformedURLException, UnknownHostException {
         this( context.isWorkgroup0() ?
             new URL( null, "smb://" + name, Handler.SMB_HANDLER ) :
-            new URL( context.url, name, Handler.SMB_HANDLER ), context.auth );
+            new URL( context.url, RFC_2396_DISTINGUISHING_PREFIX + name, Handler.SMB_HANDLER ), context.auth );
         if ((shareAccess & ~(FILE_SHARE_READ | FILE_SHARE_WRITE | FILE_SHARE_DELETE)) != 0) {
             throw new RuntimeException( "Illegal shareAccess parameter" );
         }
@@ -624,7 +625,7 @@ public class SmbFile extends URLConnection implements SmbConstants {
                 throws MalformedURLException, UnknownHostException {
         this( context.isWorkgroup0() ?
             new URL( null, "smb://" + name + "/", Handler.SMB_HANDLER ) :
-            new URL( context.url, name + (( attributes & ATTR_DIRECTORY ) > 0 ? "/" : "" )));
+            new URL( context.url, RFC_2396_DISTINGUISHING_PREFIX +name + (( attributes & ATTR_DIRECTORY ) > 0 ? "/" : "" )));
 
         /* why was this removed before? DFS? copyTo? Am I going around in circles? */
         auth = context.auth;
