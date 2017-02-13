@@ -15,7 +15,7 @@
  * License along with this library; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
-
+ 
 package jcifs;
 
 import java.util.Properties;
@@ -160,7 +160,9 @@ public static int socketCount = 0;
             prp.load( in );
         }
         try {
-            prp.putAll( System.getProperties() );
+            //upgrade version 1.3.18
+            //prp.putAll( System.getProperties() );
+            prp.putAll( (java.util.Map)System.getProperties().clone() );
         } catch( SecurityException se ) {
             if( log.level > 1 )
                 log.println( "SecurityException: jcifs will ignore System properties" );
